@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Forgotten Dungeon</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        #game-container, #question-container, #result-container {
+            display: none;
+        }
+        .enemy-image {
+            max-width: 200px;
+            max-height: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <h1>Welcome to The Forgotten Dungeon</h1>
+        <p>You wake up in a dungeon with amnesia...</p>
+        <button onclick="startGame()">Start</button>
+    </div>
+
+    <div id="question-container">
+        <h2 id="question"></h2>
+        <input type="text" id="answer">
+        <button onclick="checkAnswer()">Submit</button>
+    </div>
+
+    <div id="result-container">
+        <p id="result"></p>
+        <button onclick="continueGame()">Continue</button>
+    </div>
+
+    <script>
+        let enemiesDefeated = 0;
+        let currentPath = 1; // Current path of the player
+
+        function startGame() {
+            document.getElementById("game-container").style.display = "none";
+            document.getElementById("question-container").style.display = "block";
+            askQuestion();
+        }
+
+        function askQuestion() {
+            const paths = {
+                1: [
+                    { question: "Identify the correct past tense of 'go.'", answer: "1" },
+                    { question: "Choose the correct sentence with parallel structure: He likes swimming, running, and to play tennis.", answer: "2" },
+                    { question: "What is the plural form of 'child'?", answer: "3" }
+                ],
+                2: [
+                    { question: "Which word is a synonym for 'happy'?", answer: "1" },
+                    { question: "Identify the correct spelling: A. Ocasion, B. Occasion, C. Occassion", answer: "2" }
+                ],
+                3: [
+                    { question: "What is the capital of France?", answer: "paris" },
+                    { question: "Who wrote 'Romeo and Juliet'?", answer: "shakespeare" }
+                ],
+                4: [
+                    { question: "What is the square root of 144?", answer: "12" },
+                    { question: "What is the chemical symbol for water?", answer: "h2o" }
+                ],
+                5: [
+                    { question: "What is the largest planet in our solar system?", answer: "jupiter" },
+                    { question: "Who painted the Mona Lisa?", answer: "davinci" }
+                ]
+            };
+
+            const currentQuestions = paths[currentPath];
+            const randomIndex = Math.floor(Math.random() * currentQuestions.length);
+            const currentQuestion = currentQuestions[randomIndex];
+            document.getElementById("question").textContent = currentQuestion.question;
+        }
+
+        function checkAnswer() {
+            const userInput = document.getElementById("answer").value.trim().toLowerCase();
+            const currentQuestion = document.getElementById("question").textContent;
+            const answers = {
+                "Identify the correct past tense of 'go.'": "1",
+                "Choose the correct sentence with parallel structure: He likes swimming, running, and to play tennis.": "2",
+                "What is the plural form of 'child'?": "3",
+                "Which word is a synonym for 'happy'?": "1",
+                "Identify the correct spelling: A. Ocasion, B. Occasion, C. Occassion": "2",
+                "What is the capital of France?": "paris",
+                "Who wrote 'Romeo and Juliet'?": "shakespeare",
+                "What is the square root of 144?": "12",
+                "What is the chemical symbol for water?": "h2o",
+                "What is the largest planet in our solar system?": "jupiter",
+                "Who painted the Mona Lisa?": "davinci"
+            };
+
+            const correctAnswer = answers[currentQuestion];
+
+            if (userInput === correctAnswer) {
+                document.getElementById("result").textContent = "Correct! You defeated the enemy.";
+                enemiesDefeated++;
+            } else {
+                document.getElementById("result").textContent = "Incorrect! Try again.";
+            }
+            document.getElementById("question-container").style.display = "none";
+            document.getElementById("result-container").style.display = "block";
+        }
+
+        function continueGame() {
+            document.getElementById("result-container").style.display = "none";
+            if (enemiesDefeated < 20) {
+                if (enemiesDefeated === 5) {
+                    currentPath = 2;
+                } else if (enemiesDefeated === 10) {
+                    currentPath = 3;
+                } else if (enemiesDefeated === 15) {
+                    currentPath = 4;
+                } else if (enemiesDefeated === 17) {
+                    currentPath = 5;
+                }
+                document.getElementById("question-container").style.display = "block";
+                askQuestion();
+            } else {
+                document.write("<h1>Congratulations! You escaped the dungeon.</h1>");
+            }
+        }
+    </script>
+</body>
+</html>
